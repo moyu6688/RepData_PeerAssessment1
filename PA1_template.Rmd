@@ -86,8 +86,12 @@ filled.step.per.day.median<-median(data.filled.step.per.day$steps)
 data.filled$weekday<-weekdays(data.filled$date)
 data.filled[weekdays(data.filled$date) %in% c("Monday", "Tuesday", "Wednesday","Thursday","Friday"),c("weekday")]<-"weekday"
 data.filled[weekdays(data.filled$date) %in% c("Saturday", "Sunday"),c("weekday")]<-"weekend"
+
+data.filled.daily<-aggregate(data.filled$steps,list(data.filled$interval,data.filled$weekday),mean,na.rm=TRUE)
+colnames(data.filled.daily)<-c("interval","weekday","steps")
+
 library(ggplot2)
-ggplot(data.filled, aes(interval,steps)) +  
+ggplot(data.filled.daily, aes(interval,steps)) +  
   geom_line() + 
   facet_grid(weekday~.) 
 ```
